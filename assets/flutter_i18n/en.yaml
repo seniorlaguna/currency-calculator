@@ -1,0 +1,25 @@
+title: Currency Calculator
+like: Like App
+get_pro: Get Pro Version
+contact: Contact
+terms: Terms of Use
+privacy: Privacy Policy
+overview: Quick Overview
+refresh: Latest rates from
+searchHint: "Search for currency or country"
+
+termsUrl: "https://seniorlaguna.github.io/currency_calculator/terms_en.html"
+privacyUrl: "https://seniorlaguna.github.io/currency_calculator/terms_en.html"
+contactUrl: "https://seniorlaguna.github.io/contact.html"
+
+country:
+  de: Germany
+  us: United States of America
+  fr: France
+
+currency:
+  eur: Euro
+  usd: Dollar
+
+error:
+  refresh: "Refresh failed. Check your internet connection."

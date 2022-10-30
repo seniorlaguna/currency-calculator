@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>918694654191-tr5qdhmqd174af06s65gav9gcobcd38q.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.918694654191-tr5qdhmqd174af06s65gav9gcobcd38q</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDCoS1gF89HMz1IY9IfyGRv-RpbBDxMBJc</string>
+	<key>GCM_SENDER_ID</key>
+	<string>918694654191</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.currencyCalculator</string>
+	<key>PROJECT_ID</key>
+	<string>currency-calculator-9863b</string>
+	<key>STORAGE_BUCKET</key>
+	<string>currency-calculator-9863b.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:918694654191:ios:c5092c513bc8308e59ab1a</string>
+</dict>
+</plist>

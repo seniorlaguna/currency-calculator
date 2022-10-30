@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "918694654191",
+    "project_id": "currency-calculator-9863b",
+    "storage_bucket": "currency-calculator-9863b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:918694654191:android:4b68765da0f38bd759ab1a",
+        "android_client_info": {
+          "package_name": "com.example.currency_calculator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "918694654191-ml0rksu92j898njsko8ddo9m8mi07o3f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnhaZoMbznBhvJ3dmFigIV8_HhV1tirUA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "918694654191-ml0rksu92j898njsko8ddo9m8mi07o3f.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "918694654191-tr5qdhmqd174af06s65gav9gcobcd38q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.currencyCalculator"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:918694654191:android:ea804c8fc6901a4159ab1a",
+        "android_client_info": {
+          "package_name": "de.seniorlaguna.currency_calculator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "918694654191-ml0rksu92j898njsko8ddo9m8mi07o3f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnhaZoMbznBhvJ3dmFigIV8_HhV1tirUA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "918694654191-ml0rksu92j898njsko8ddo9m8mi07o3f.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "918694654191-tr5qdhmqd174af06s65gav9gcobcd38q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.currencyCalculator"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
