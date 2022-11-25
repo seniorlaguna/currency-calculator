@@ -25,6 +25,8 @@ mixin _$Currency {
   String get symbol => throw _privateConstructorUsedError;
   List<String> get countryIds => throw _privateConstructorUsedError;
   List<double> get bills => throw _privateConstructorUsedError;
+  String get format => throw _privateConstructorUsedError;
+  int get decimalPlaces => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -42,7 +44,9 @@ abstract class $CurrencyCopyWith<$Res> {
       String flagCode,
       String symbol,
       List<String> countryIds,
-      List<double> bills});
+      List<double> bills,
+      String format,
+      int decimalPlaces});
 }
 
 /// @nodoc
@@ -63,6 +67,8 @@ class _$CurrencyCopyWithImpl<$Res, $Val extends Currency>
     Object? symbol = null,
     Object? countryIds = null,
     Object? bills = null,
+    Object? format = null,
+    Object? decimalPlaces = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -85,6 +91,14 @@ class _$CurrencyCopyWithImpl<$Res, $Val extends Currency>
           ? _value.bills
           : bills // ignore: cast_nullable_to_non_nullable
               as List<double>,
+      format: null == format
+          ? _value.format
+          : format // ignore: cast_nullable_to_non_nullable
+              as String,
+      decimalPlaces: null == decimalPlaces
+          ? _value.decimalPlaces
+          : decimalPlaces // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -101,7 +115,9 @@ abstract class _$$_CurrencyCopyWith<$Res> implements $CurrencyCopyWith<$Res> {
       String flagCode,
       String symbol,
       List<String> countryIds,
-      List<double> bills});
+      List<double> bills,
+      String format,
+      int decimalPlaces});
 }
 
 /// @nodoc
@@ -120,6 +136,8 @@ class __$$_CurrencyCopyWithImpl<$Res>
     Object? symbol = null,
     Object? countryIds = null,
     Object? bills = null,
+    Object? format = null,
+    Object? decimalPlaces = null,
   }) {
     return _then(_$_Currency(
       id: null == id
@@ -142,6 +160,14 @@ class __$$_CurrencyCopyWithImpl<$Res>
           ? _value._bills
           : bills // ignore: cast_nullable_to_non_nullable
               as List<double>,
+      format: null == format
+          ? _value.format
+          : format // ignore: cast_nullable_to_non_nullable
+              as String,
+      decimalPlaces: null == decimalPlaces
+          ? _value.decimalPlaces
+          : decimalPlaces // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -154,7 +180,9 @@ class _$_Currency implements _Currency {
       required this.flagCode,
       required this.symbol,
       required final List<String> countryIds,
-      required final List<double> bills})
+      required final List<double> bills,
+      required this.format,
+      required this.decimalPlaces})
       : _countryIds = countryIds,
         _bills = bills;
 
@@ -182,8 +210,13 @@ class _$_Currency implements _Currency {
   }
 
   @override
+  final String format;
+  @override
+  final int decimalPlaces;
+
+  @override
   String toString() {
-    return 'Currency(id: $id, flagCode: $flagCode, symbol: $symbol, countryIds: $countryIds, bills: $bills)';
+    return 'Currency(id: $id, flagCode: $flagCode, symbol: $symbol, countryIds: $countryIds, bills: $bills, format: $format, decimalPlaces: $decimalPlaces)';
   }
 
   @override
@@ -197,7 +230,10 @@ class _$_Currency implements _Currency {
             (identical(other.symbol, symbol) || other.symbol == symbol) &&
             const DeepCollectionEquality()
                 .equals(other._countryIds, _countryIds) &&
-            const DeepCollectionEquality().equals(other._bills, _bills));
+            const DeepCollectionEquality().equals(other._bills, _bills) &&
+            (identical(other.format, format) || other.format == format) &&
+            (identical(other.decimalPlaces, decimalPlaces) ||
+                other.decimalPlaces == decimalPlaces));
   }
 
   @JsonKey(ignore: true)
@@ -208,7 +244,9 @@ class _$_Currency implements _Currency {
       flagCode,
       symbol,
       const DeepCollectionEquality().hash(_countryIds),
-      const DeepCollectionEquality().hash(_bills));
+      const DeepCollectionEquality().hash(_bills),
+      format,
+      decimalPlaces);
 
   @JsonKey(ignore: true)
   @override
@@ -230,7 +268,9 @@ abstract class _Currency implements Currency {
       required final String flagCode,
       required final String symbol,
       required final List<String> countryIds,
-      required final List<double> bills}) = _$_Currency;
+      required final List<double> bills,
+      required final String format,
+      required final int decimalPlaces}) = _$_Currency;
 
   factory _Currency.fromJson(Map<String, dynamic> json) = _$_Currency.fromJson;
 
@@ -245,9 +285,18 @@ abstract class _Currency implements Currency {
   @override
   List<double> get bills;
   @override
+  String get format;
+  @override
+  int get decimalPlaces;
+  @override
   @JsonKey(ignore: true)
   _$$_CurrencyCopyWith<_$_Currency> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+CurrencySelectionState _$CurrencySelectionStateFromJson(
+    Map<String, dynamic> json) {
+  return _CurrencySelectionState.fromJson(json);
 }
 
 /// @nodoc
@@ -255,7 +304,9 @@ mixin _$CurrencySelectionState {
   bool get initialized => throw _privateConstructorUsedError;
   bool? get showClear => throw _privateConstructorUsedError;
   List<Currency>? get currencies => throw _privateConstructorUsedError;
+  List<Currency>? get favorites => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $CurrencySelectionStateCopyWith<CurrencySelectionState> get copyWith =>
       throw _privateConstructorUsedError;
@@ -267,7 +318,11 @@ abstract class $CurrencySelectionStateCopyWith<$Res> {
           $Res Function(CurrencySelectionState) then) =
       _$CurrencySelectionStateCopyWithImpl<$Res, CurrencySelectionState>;
   @useResult
-  $Res call({bool initialized, bool? showClear, List<Currency>? currencies});
+  $Res call(
+      {bool initialized,
+      bool? showClear,
+      List<Currency>? currencies,
+      List<Currency>? favorites});
 }
 
 /// @nodoc
@@ -287,6 +342,7 @@ class _$CurrencySelectionStateCopyWithImpl<$Res,
     Object? initialized = null,
     Object? showClear = freezed,
     Object? currencies = freezed,
+    Object? favorites = freezed,
   }) {
     return _then(_value.copyWith(
       initialized: null == initialized
@@ -301,6 +357,10 @@ class _$CurrencySelectionStateCopyWithImpl<$Res,
           ? _value.currencies
           : currencies // ignore: cast_nullable_to_non_nullable
               as List<Currency>?,
+      favorites: freezed == favorites
+          ? _value.favorites
+          : favorites // ignore: cast_nullable_to_non_nullable
+              as List<Currency>?,
     ) as $Val);
   }
 }
@@ -313,7 +373,11 @@ abstract class _$$_CurrencySelectionStateCopyWith<$Res>
       __$$_CurrencySelectionStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool initialized, bool? showClear, List<Currency>? currencies});
+  $Res call(
+      {bool initialized,
+      bool? showClear,
+      List<Currency>? currencies,
+      List<Currency>? favorites});
 }
 
 /// @nodoc
@@ -331,6 +395,7 @@ class __$$_CurrencySelectionStateCopyWithImpl<$Res>
     Object? initialized = null,
     Object? showClear = freezed,
     Object? currencies = freezed,
+    Object? favorites = freezed,
   }) {
     return _then(_$_CurrencySelectionState(
       initialized: null == initialized
@@ -345,18 +410,27 @@ class __$$_CurrencySelectionStateCopyWithImpl<$Res>
           ? _value._currencies
           : currencies // ignore: cast_nullable_to_non_nullable
               as List<Currency>?,
+      favorites: freezed == favorites
+          ? _value._favorites
+          : favorites // ignore: cast_nullable_to_non_nullable
+              as List<Currency>?,
     ));
   }
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$_CurrencySelectionState implements _CurrencySelectionState {
   const _$_CurrencySelectionState(
       {required this.initialized,
       this.showClear,
-      final List<Currency>? currencies})
-      : _currencies = currencies;
+      final List<Currency>? currencies,
+      final List<Currency>? favorites})
+      : _currencies = currencies,
+        _favorites = favorites;
+
+  factory _$_CurrencySelectionState.fromJson(Map<String, dynamic> json) =>
+      _$$_CurrencySelectionStateFromJson(json);
 
   @override
   final bool initialized;
@@ -371,9 +445,18 @@ class _$_CurrencySelectionState implements _CurrencySelectionState {
     return EqualUnmodifiableListView(value);
   }
 
+  final List<Currency>? _favorites;
+  @override
+  List<Currency>? get favorites {
+    final value = _favorites;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   String toString() {
-    return 'CurrencySelectionState(initialized: $initialized, showClear: $showClear, currencies: $currencies)';
+    return 'CurrencySelectionState(initialized: $initialized, showClear: $showClear, currencies: $currencies, favorites: $favorites)';
   }
 
   @override
@@ -386,12 +469,19 @@ class _$_CurrencySelectionState implements _CurrencySelectionState {
             (identical(other.showClear, showClear) ||
                 other.showClear == showClear) &&
             const DeepCollectionEquality()
-                .equals(other._currencies, _currencies));
+                .equals(other._currencies, _currencies) &&
+            const DeepCollectionEquality()
+                .equals(other._favorites, _favorites));
   }
 
+  @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, initialized, showClear,
-      const DeepCollectionEquality().hash(_currencies));
+  int get hashCode => Object.hash(
+      runtimeType,
+      initialized,
+      showClear,
+      const DeepCollectionEquality().hash(_currencies),
+      const DeepCollectionEquality().hash(_favorites));
 
   @JsonKey(ignore: true)
   @override
@@ -399,13 +489,24 @@ class _$_CurrencySelectionState implements _CurrencySelectionState {
   _$$_CurrencySelectionStateCopyWith<_$_CurrencySelectionState> get copyWith =>
       __$$_CurrencySelectionStateCopyWithImpl<_$_CurrencySelectionState>(
           this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_CurrencySelectionStateToJson(
+      this,
+    );
+  }
 }
 
 abstract class _CurrencySelectionState implements CurrencySelectionState {
   const factory _CurrencySelectionState(
       {required final bool initialized,
       final bool? showClear,
-      final List<Currency>? currencies}) = _$_CurrencySelectionState;
+      final List<Currency>? currencies,
+      final List<Currency>? favorites}) = _$_CurrencySelectionState;
+
+  factory _CurrencySelectionState.fromJson(Map<String, dynamic> json) =
+      _$_CurrencySelectionState.fromJson;
 
   @override
   bool get initialized;
@@ -413,6 +514,8 @@ abstract class _CurrencySelectionState implements CurrencySelectionState {
   bool? get showClear;
   @override
   List<Currency>? get currencies;
+  @override
+  List<Currency>? get favorites;
   @override
   @JsonKey(ignore: true)
   _$$_CurrencySelectionStateCopyWith<_$_CurrencySelectionState> get copyWith =>
@@ -425,12 +528,13 @@ AppState _$AppStateFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$AppState {
-  bool get initialized => throw _privateConstructorUsedError;
+  bool get loading => throw _privateConstructorUsedError;
+  bool get error => throw _privateConstructorUsedError;
   Currency? get from => throw _privateConstructorUsedError;
   Currency? get to => throw _privateConstructorUsedError;
   double? get conversionRate => throw _privateConstructorUsedError;
   DateTime? get refreshDate => throw _privateConstructorUsedError;
-  String? get error => throw _privateConstructorUsedError;
+  String? get message => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -444,12 +548,13 @@ abstract class $AppStateCopyWith<$Res> {
       _$AppStateCopyWithImpl<$Res, AppState>;
   @useResult
   $Res call(
-      {bool initialized,
+      {bool loading,
+      bool error,
       Currency? from,
       Currency? to,
       double? conversionRate,
       DateTime? refreshDate,
-      String? error});
+      String? message});
 
   $CurrencyCopyWith<$Res>? get from;
   $CurrencyCopyWith<$Res>? get to;
@@ -468,17 +573,22 @@ class _$AppStateCopyWithImpl<$Res, $Val extends AppState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? initialized = null,
+    Object? loading = null,
+    Object? error = null,
     Object? from = freezed,
     Object? to = freezed,
     Object? conversionRate = freezed,
     Object? refreshDate = freezed,
-    Object? error = freezed,
+    Object? message = freezed,
   }) {
     return _then(_value.copyWith(
-      initialized: null == initialized
-          ? _value.initialized
-          : initialized // ignore: cast_nullable_to_non_nullable
+      loading: null == loading
+          ? _value.loading
+          : loading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      error: null == error
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
               as bool,
       from: freezed == from
           ? _value.from
@@ -496,9 +606,9 @@ class _$AppStateCopyWithImpl<$Res, $Val extends AppState>
           ? _value.refreshDate
           : refreshDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      error: freezed == error
-          ? _value.error
-          : error // ignore: cast_nullable_to_non_nullable
+      message: freezed == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -536,12 +646,13 @@ abstract class _$$_AppStateCopyWith<$Res> implements $AppStateCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {bool initialized,
+      {bool loading,
+      bool error,
       Currency? from,
       Currency? to,
       double? conversionRate,
       DateTime? refreshDate,
-      String? error});
+      String? message});
 
   @override
   $CurrencyCopyWith<$Res>? get from;
@@ -560,17 +671,22 @@ class __$$_AppStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? initialized = null,
+    Object? loading = null,
+    Object? error = null,
     Object? from = freezed,
     Object? to = freezed,
     Object? conversionRate = freezed,
     Object? refreshDate = freezed,
-    Object? error = freezed,
+    Object? message = freezed,
   }) {
     return _then(_$_AppState(
-      initialized: null == initialized
-          ? _value.initialized
-          : initialized // ignore: cast_nullable_to_non_nullable
+      loading: null == loading
+          ? _value.loading
+          : loading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      error: null == error
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
               as bool,
       from: freezed == from
           ? _value.from
@@ -588,9 +704,9 @@ class __$$_AppStateCopyWithImpl<$Res>
           ? _value.refreshDate
           : refreshDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      error: freezed == error
-          ? _value.error
-          : error // ignore: cast_nullable_to_non_nullable
+      message: freezed == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -600,18 +716,21 @@ class __$$_AppStateCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_AppState implements _AppState {
   const _$_AppState(
-      {required this.initialized,
+      {required this.loading,
+      required this.error,
       this.from,
       this.to,
       this.conversionRate,
       this.refreshDate,
-      this.error});
+      this.message});
 
   factory _$_AppState.fromJson(Map<String, dynamic> json) =>
       _$$_AppStateFromJson(json);
 
   @override
-  final bool initialized;
+  final bool loading;
+  @override
+  final bool error;
   @override
   final Currency? from;
   @override
@@ -621,11 +740,11 @@ class _$_AppState implements _AppState {
   @override
   final DateTime? refreshDate;
   @override
-  final String? error;
+  final String? message;
 
   @override
   String toString() {
-    return 'AppState(initialized: $initialized, from: $from, to: $to, conversionRate: $conversionRate, refreshDate: $refreshDate, error: $error)';
+    return 'AppState(loading: $loading, error: $error, from: $from, to: $to, conversionRate: $conversionRate, refreshDate: $refreshDate, message: $message)';
   }
 
   @override
@@ -633,21 +752,21 @@ class _$_AppState implements _AppState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_AppState &&
-            (identical(other.initialized, initialized) ||
-                other.initialized == initialized) &&
+            (identical(other.loading, loading) || other.loading == loading) &&
+            (identical(other.error, error) || other.error == error) &&
             (identical(other.from, from) || other.from == from) &&
             (identical(other.to, to) || other.to == to) &&
             (identical(other.conversionRate, conversionRate) ||
                 other.conversionRate == conversionRate) &&
             (identical(other.refreshDate, refreshDate) ||
                 other.refreshDate == refreshDate) &&
-            (identical(other.error, error) || other.error == error));
+            (identical(other.message, message) || other.message == message));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, initialized, from, to, conversionRate, refreshDate, error);
+  int get hashCode => Object.hash(runtimeType, loading, error, from, to,
+      conversionRate, refreshDate, message);
 
   @JsonKey(ignore: true)
   @override
@@ -665,17 +784,20 @@ class _$_AppState implements _AppState {
 
 abstract class _AppState implements AppState {
   const factory _AppState(
-      {required final bool initialized,
+      {required final bool loading,
+      required final bool error,
       final Currency? from,
       final Currency? to,
       final double? conversionRate,
       final DateTime? refreshDate,
-      final String? error}) = _$_AppState;
+      final String? message}) = _$_AppState;
 
   factory _AppState.fromJson(Map<String, dynamic> json) = _$_AppState.fromJson;
 
   @override
-  bool get initialized;
+  bool get loading;
+  @override
+  bool get error;
   @override
   Currency? get from;
   @override
@@ -685,7 +807,7 @@ abstract class _AppState implements AppState {
   @override
   DateTime? get refreshDate;
   @override
-  String? get error;
+  String? get message;
   @override
   @JsonKey(ignore: true)
   _$$_AppStateCopyWith<_$_AppState> get copyWith =>

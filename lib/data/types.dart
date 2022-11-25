@@ -11,7 +11,9 @@ class Currency with _$Currency {
     required String flagCode,
     required String symbol,
     required List<String> countryIds,
-    required List<double> bills
+    required List<double> bills,
+    required String format,
+    required int decimalPlaces
   }) = _Currency;
 
   factory Currency.fromJson(Map<String, Object?> json) => _$CurrencyFromJson(json);
@@ -22,19 +24,23 @@ class CurrencySelectionState with _$CurrencySelectionState {
   const factory CurrencySelectionState({
     required bool initialized,
     bool? showClear,
-    List<Currency>? currencies
+    List<Currency>? currencies,
+    List<Currency>? favorites
   }) = _CurrencySelectionState;
+
+  factory CurrencySelectionState.fromJson(Map<String, Object?> json) => _$CurrencySelectionStateFromJson(json);
 }
 
 @freezed
 class AppState with _$AppState {
   const factory AppState({
-    required bool initialized,
+    required bool loading,
+    required bool error,
     Currency? from,
     Currency? to,
     double? conversionRate,
     DateTime? refreshDate,
-    String? error
+    String? message
   }) = _AppState;
 
   factory AppState.fromJson(Map<String, Object?> json)

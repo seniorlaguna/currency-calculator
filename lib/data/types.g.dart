@@ -16,6 +16,8 @@ _$_Currency _$$_CurrencyFromJson(Map<String, dynamic> json) => _$_Currency(
       bills: (json['bills'] as List<dynamic>)
           .map((e) => (e as num).toDouble())
           .toList(),
+      format: json['format'] as String,
+      decimalPlaces: json['decimalPlaces'] as int,
     );
 
 Map<String, dynamic> _$$_CurrencyToJson(_$_Currency instance) =>
@@ -25,10 +27,35 @@ Map<String, dynamic> _$$_CurrencyToJson(_$_Currency instance) =>
       'symbol': instance.symbol,
       'countryIds': instance.countryIds,
       'bills': instance.bills,
+      'format': instance.format,
+      'decimalPlaces': instance.decimalPlaces,
+    };
+
+_$_CurrencySelectionState _$$_CurrencySelectionStateFromJson(
+        Map<String, dynamic> json) =>
+    _$_CurrencySelectionState(
+      initialized: json['initialized'] as bool,
+      showClear: json['showClear'] as bool?,
+      currencies: (json['currencies'] as List<dynamic>?)
+          ?.map((e) => Currency.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      favorites: (json['favorites'] as List<dynamic>?)
+          ?.map((e) => Currency.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$$_CurrencySelectionStateToJson(
+        _$_CurrencySelectionState instance) =>
+    <String, dynamic>{
+      'initialized': instance.initialized,
+      'showClear': instance.showClear,
+      'currencies': instance.currencies,
+      'favorites': instance.favorites,
     };
 
 _$_AppState _$$_AppStateFromJson(Map<String, dynamic> json) => _$_AppState(
-      initialized: json['initialized'] as bool,
+      loading: json['loading'] as bool,
+      error: json['error'] as bool,
       from: json['from'] == null
           ? null
           : Currency.fromJson(json['from'] as Map<String, dynamic>),
@@ -39,15 +66,16 @@ _$_AppState _$$_AppStateFromJson(Map<String, dynamic> json) => _$_AppState(
       refreshDate: json['refreshDate'] == null
           ? null
           : DateTime.parse(json['refreshDate'] as String),
-      error: json['error'] as String?,
+      message: json['message'] as String?,
     );
 
 Map<String, dynamic> _$$_AppStateToJson(_$_AppState instance) =>
     <String, dynamic>{
-      'initialized': instance.initialized,
+      'loading': instance.loading,
+      'error': instance.error,
       'from': instance.from,
       'to': instance.to,
       'conversionRate': instance.conversionRate,
       'refreshDate': instance.refreshDate?.toIso8601String(),
-      'error': instance.error,
+      'message': instance.message,
     };
