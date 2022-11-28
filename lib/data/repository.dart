@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:currency_calculator/data/types.dart';
 import 'package:hive/hive.dart';
@@ -9,8 +7,7 @@ typedef Rates = Map<String, Map<String, dynamic>>;
 class CurrencyCalculatorRepository {
   static const String _cacheCurrenciesTimeStampKey = "ctimestamp";
   static const String _cacheRatesTimeStampKey = "rtimestamp";
-  static const String _cacheCurrenciesDataKey = "cdata";
-  static const String _cacheRatesDataKey = "rdata";
+
 
   final Box _cache;
 
@@ -154,5 +151,3 @@ class CurrencyCalculatorRepository {
     return rates;
   }
 }
-
-class FirebaseRatesException extends Error {}
