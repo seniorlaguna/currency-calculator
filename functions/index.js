@@ -193,16 +193,20 @@ async function fetchRates() {
     await Promise.all(promises)
 }
 
-// function importCurrencies() {
-//     for (let i = 0; i < currencies.length; i++) {
-//         let currency = currencies[i]
-//         admin.firestore().doc("currencies/"+currency.id).set(currency)
-//     }
-// }
+function importCurrencies() {
+    let doc = {}
 
-// exports.importCurrencies = functions.pubsub.schedule("0 13 * * *").timeZone("Europe/Berlin").onRun(async (context) => {
-//     importCurrencies()
-// });
+    for (let i = 0; i < currencies.length; i++) {
+        let currency = currencies[i]
+        doc[currency.id] = currency
+    }
+
+    admin.firestore().doc("data/currencies").set(doc)
+}
+
+exports.importCurrencies = functions.pubsub.schedule("0 13 * * *").timeZone("Europe/Berlin").onRun(async (context) => {
+    importCurrencies()
+});
 
 exports.fetchRates = functions.pubsub.schedule("0 3 * * *").timeZone("Europe/Berlin").onRun(async (context) => {
     await fetchRates()
