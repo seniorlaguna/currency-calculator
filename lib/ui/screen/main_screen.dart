@@ -35,40 +35,47 @@ class MainScreen extends StatelessWidget {
             ),
             centerTitle: true,
             actions: [
-              IconButton(
-                  onPressed: AppCubit.of(context).refresh,
-                  icon: const Icon(Icons.refresh))
+              BlocBuilder<AppCubit, AppState>(builder: (context, state) {
+                if (state.uiState == AppUIState.loading) {
+                  return Container();
+                } else if (state.uiState == AppUIState.updating) {
+                  return RotatingIcon();
+                }
+                return IconButton(
+                    onPressed: state.uiState == AppUIState.loaded
+                        ? AppCubit.of(context).update
+                        : AppCubit.of(context).load,
+                    icon: const Icon(Icons.refresh));
+              })
             ],
           ),
           drawer: const AppDrawer(),
           body: BlocListener<AppCubit, AppState>(
-            listenWhen: (previous, current) => 
+            listenWhen: (previous, current) =>
                 previous.message != current.message && current.message != null,
             listener: (context, state) {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Row(
-              children: [
-                const Icon(
-                  Icons.announcement,
-                  color: Colors.white,
-                ),
-                const SizedBox(
-                  width: 16,
-                ),
-                Text(FlutterI18n.translate(context, "error.${state.message}")),
-              ],
-            )));
+                  content: Row(
+                children: [
+                  const Icon(
+                    Icons.announcement,
+                    color: Colors.white,
+                  ),
+                  const SizedBox(
+                    width: 16,
+                  ),
+                  Text(
+                      FlutterI18n.translate(context, "msg.${state.message}")),
+                ],
+              )));
             },
             child: Padding(
               padding: const EdgeInsets.fromLTRB(20, 20, 20, 4),
               child:
                   BlocBuilder<AppCubit, AppState>(builder: (context, appState) {
-                
-                if (appState.error) {
+                if (appState.uiState == AppUIState.error) {
                   return const ErrorPage();
-                }
-
-                else if (appState.loading) {
+                } else if (appState.uiState == AppUIState.loading) {
                   return const LoadingPage();
                 }
 
@@ -79,7 +86,6 @@ class MainScreen extends StatelessWidget {
                     refreshDate: appState.refreshDate!,
                     onChangeFromCurrency: _onChangeFromCurrency,
                     onChangeToCurrency: _onChangeToCurrency);
-                
               }),
             ),
           ),
@@ -104,13 +110,13 @@ class MainScreen extends StatelessWidget {
   }
 
   void _onChangeFromCurrency(BuildContext context) async {
-    _changeCurrency(
-        context, (currency) => AppCubit.of(context).setFromCurrency(currency));
+    _changeCurrency(context,
+        (currency) => AppCubit.of(context).setCurrencies(from: currency));
   }
 
   void _onChangeToCurrency(BuildContext context) {
-    _changeCurrency(
-        context, (currency) => AppCubit.of(context).setToCurrency(currency));
+    _changeCurrency(context,
+        (currency) => AppCubit.of(context).setCurrencies(to: currency));
   }
 }
 
@@ -311,7 +317,7 @@ class ErrorPage extends StatelessWidget {
           OutlinedButton.icon(
             icon: Icon(Icons.refresh),
             onPressed: () {
-              AppCubit.of(context).init();
+              AppCubit.of(context).load();
             },
             label: Text(FlutterI18n.translate(context, "error.retry")),
           )
@@ -376,6 +382,42 @@ class AppDrawer extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class RotatingIcon extends StatefulWidget {
+  const RotatingIcon({super.key});
+
+  @override
+  State<RotatingIcon> createState() => _RotatingIconState();
+}
+
+class _RotatingIconState extends State<RotatingIcon>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 12),
+      child: RotationTransition(
+          turns: _controller, child: const Icon(Icons.refresh)),
     );
   }
 }

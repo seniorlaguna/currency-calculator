@@ -3,6 +3,12 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'types.freezed.dart';
 part 'types.g.dart';
 
+enum AppUIState {
+  loading,
+  loaded,
+  updating,
+  error
+}
 
 @freezed
 class Currency with _$Currency {
@@ -34,8 +40,7 @@ class CurrencySelectionState with _$CurrencySelectionState {
 @freezed
 class AppState with _$AppState {
   const factory AppState({
-    required bool loading,
-    required bool error,
+    required AppUIState uiState,
     Currency? from,
     Currency? to,
     double? conversionRate,

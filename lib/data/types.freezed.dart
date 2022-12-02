@@ -528,8 +528,7 @@ AppState _$AppStateFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$AppState {
-  bool get loading => throw _privateConstructorUsedError;
-  bool get error => throw _privateConstructorUsedError;
+  AppUIState get uiState => throw _privateConstructorUsedError;
   Currency? get from => throw _privateConstructorUsedError;
   Currency? get to => throw _privateConstructorUsedError;
   double? get conversionRate => throw _privateConstructorUsedError;
@@ -548,8 +547,7 @@ abstract class $AppStateCopyWith<$Res> {
       _$AppStateCopyWithImpl<$Res, AppState>;
   @useResult
   $Res call(
-      {bool loading,
-      bool error,
+      {AppUIState uiState,
       Currency? from,
       Currency? to,
       double? conversionRate,
@@ -573,8 +571,7 @@ class _$AppStateCopyWithImpl<$Res, $Val extends AppState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? loading = null,
-    Object? error = null,
+    Object? uiState = null,
     Object? from = freezed,
     Object? to = freezed,
     Object? conversionRate = freezed,
@@ -582,14 +579,10 @@ class _$AppStateCopyWithImpl<$Res, $Val extends AppState>
     Object? message = freezed,
   }) {
     return _then(_value.copyWith(
-      loading: null == loading
-          ? _value.loading
-          : loading // ignore: cast_nullable_to_non_nullable
-              as bool,
-      error: null == error
-          ? _value.error
-          : error // ignore: cast_nullable_to_non_nullable
-              as bool,
+      uiState: null == uiState
+          ? _value.uiState
+          : uiState // ignore: cast_nullable_to_non_nullable
+              as AppUIState,
       from: freezed == from
           ? _value.from
           : from // ignore: cast_nullable_to_non_nullable
@@ -646,8 +639,7 @@ abstract class _$$_AppStateCopyWith<$Res> implements $AppStateCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {bool loading,
-      bool error,
+      {AppUIState uiState,
       Currency? from,
       Currency? to,
       double? conversionRate,
@@ -671,8 +663,7 @@ class __$$_AppStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? loading = null,
-    Object? error = null,
+    Object? uiState = null,
     Object? from = freezed,
     Object? to = freezed,
     Object? conversionRate = freezed,
@@ -680,14 +671,10 @@ class __$$_AppStateCopyWithImpl<$Res>
     Object? message = freezed,
   }) {
     return _then(_$_AppState(
-      loading: null == loading
-          ? _value.loading
-          : loading // ignore: cast_nullable_to_non_nullable
-              as bool,
-      error: null == error
-          ? _value.error
-          : error // ignore: cast_nullable_to_non_nullable
-              as bool,
+      uiState: null == uiState
+          ? _value.uiState
+          : uiState // ignore: cast_nullable_to_non_nullable
+              as AppUIState,
       from: freezed == from
           ? _value.from
           : from // ignore: cast_nullable_to_non_nullable
@@ -716,8 +703,7 @@ class __$$_AppStateCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_AppState implements _AppState {
   const _$_AppState(
-      {required this.loading,
-      required this.error,
+      {required this.uiState,
       this.from,
       this.to,
       this.conversionRate,
@@ -728,9 +714,7 @@ class _$_AppState implements _AppState {
       _$$_AppStateFromJson(json);
 
   @override
-  final bool loading;
-  @override
-  final bool error;
+  final AppUIState uiState;
   @override
   final Currency? from;
   @override
@@ -744,7 +728,7 @@ class _$_AppState implements _AppState {
 
   @override
   String toString() {
-    return 'AppState(loading: $loading, error: $error, from: $from, to: $to, conversionRate: $conversionRate, refreshDate: $refreshDate, message: $message)';
+    return 'AppState(uiState: $uiState, from: $from, to: $to, conversionRate: $conversionRate, refreshDate: $refreshDate, message: $message)';
   }
 
   @override
@@ -752,8 +736,7 @@ class _$_AppState implements _AppState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_AppState &&
-            (identical(other.loading, loading) || other.loading == loading) &&
-            (identical(other.error, error) || other.error == error) &&
+            (identical(other.uiState, uiState) || other.uiState == uiState) &&
             (identical(other.from, from) || other.from == from) &&
             (identical(other.to, to) || other.to == to) &&
             (identical(other.conversionRate, conversionRate) ||
@@ -765,8 +748,8 @@ class _$_AppState implements _AppState {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, loading, error, from, to,
-      conversionRate, refreshDate, message);
+  int get hashCode => Object.hash(
+      runtimeType, uiState, from, to, conversionRate, refreshDate, message);
 
   @JsonKey(ignore: true)
   @override
@@ -784,8 +767,7 @@ class _$_AppState implements _AppState {
 
 abstract class _AppState implements AppState {
   const factory _AppState(
-      {required final bool loading,
-      required final bool error,
+      {required final AppUIState uiState,
       final Currency? from,
       final Currency? to,
       final double? conversionRate,
@@ -795,9 +777,7 @@ abstract class _AppState implements AppState {
   factory _AppState.fromJson(Map<String, dynamic> json) = _$_AppState.fromJson;
 
   @override
-  bool get loading;
-  @override
-  bool get error;
+  AppUIState get uiState;
   @override
   Currency? get from;
   @override

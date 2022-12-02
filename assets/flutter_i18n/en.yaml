@@ -438,4 +438,7 @@ currency:
 error:
   message: "Something went wrong 😅\nPlease check your internet connection."
   retry: "Retry"
-  refresh: "Refresh failed."
+
+msg:
+  updated: "Your Rates Are Up To Date Again"
+  setCurrenciesError: "An Error Happened."

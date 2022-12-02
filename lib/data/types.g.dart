@@ -54,8 +54,7 @@ Map<String, dynamic> _$$_CurrencySelectionStateToJson(
     };
 
 _$_AppState _$$_AppStateFromJson(Map<String, dynamic> json) => _$_AppState(
-      loading: json['loading'] as bool,
-      error: json['error'] as bool,
+      uiState: $enumDecode(_$AppUIStateEnumMap, json['uiState']),
       from: json['from'] == null
           ? null
           : Currency.fromJson(json['from'] as Map<String, dynamic>),
@@ -71,11 +70,17 @@ _$_AppState _$$_AppStateFromJson(Map<String, dynamic> json) => _$_AppState(
 
 Map<String, dynamic> _$$_AppStateToJson(_$_AppState instance) =>
     <String, dynamic>{
-      'loading': instance.loading,
-      'error': instance.error,
+      'uiState': _$AppUIStateEnumMap[instance.uiState]!,
       'from': instance.from,
       'to': instance.to,
       'conversionRate': instance.conversionRate,
       'refreshDate': instance.refreshDate?.toIso8601String(),
       'message': instance.message,
     };
+
+const _$AppUIStateEnumMap = {
+  AppUIState.loading: 'loading',
+  AppUIState.loaded: 'loaded',
+  AppUIState.updating: 'updating',
+  AppUIState.error: 'error',
+};

@@ -6,8 +6,8 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 class CurrencySelectionCubit extends HydratedCubit<CurrencySelectionState> {
-  final CurrencyCalculatorRepository repository;
-  List<Currency> _currencies = [];
+  final BaseRepository repository;
+  Iterable<Currency> _currencies = [];
   final Map<Currency, List<String>> _searchMap = {};
   final TextEditingController controller = TextEditingController();
 
@@ -18,11 +18,11 @@ class CurrencySelectionCubit extends HydratedCubit<CurrencySelectionState> {
   Future<void> init(BuildContext context) async {
     if (_currencies.isNotEmpty) return; 
 
-    _currencies.addAll(await repository.getCurrencies());
+    _currencies = (await repository.getCurrencies())!;
     _currencies = List.from(state.favorites ?? [])..addAll(_currencies.where((element) => !(state.favorites ?? []).contains(element)));
     _prepareSearchMap(context);
 
-    emit(state.copyWith(initialized: true, currencies: _currencies, showClear: false, favorites: state.favorites ?? []));
+    emit(state.copyWith(initialized: true, currencies: _currencies.toList(), showClear: false, favorites: state.favorites ?? []));
   }
 
   void _prepareSearchMap(BuildContext context) {
@@ -43,7 +43,7 @@ class CurrencySelectionCubit extends HydratedCubit<CurrencySelectionState> {
 
   Future<void> search(String query) async {
     if (query.isEmpty) {
-      emit(state.copyWith(currencies: _currencies, showClear: false));
+      emit(state.copyWith(currencies: _currencies.toList(), showClear: false));
     }
     List<Currency> result = _currencies.where((c) => _searchMap[c]!.any((tag) => tag.contains(query.toLowerCase()))).toList();
     emit(state.copyWith(currencies: result, showClear: true));
@@ -51,7 +51,7 @@ class CurrencySelectionCubit extends HydratedCubit<CurrencySelectionState> {
 
   Future<void> clearSearch() async {
     controller.clear();
-    emit(state.copyWith(currencies: _currencies, showClear: false));
+    emit(state.copyWith(currencies: _currencies.toList(), showClear: false));
   }
 
   Future<void> toggleLike(Currency currency) async {

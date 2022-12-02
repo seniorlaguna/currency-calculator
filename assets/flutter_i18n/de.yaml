@@ -434,4 +434,7 @@ currency:
 error:
   message: "Da ist was schiefgelaufen 😅\nÜberprüfe bitte deine Internetverbindung."
   retry: "Nochmal"
-  refresh: "Aktualisieren fehlgeschlagen."
+
+msg:
+  updated: "Deine Wechselkurse sind wieder aktuell"
+  setCurrenciesError: "Da ist was schiefgelaufen"

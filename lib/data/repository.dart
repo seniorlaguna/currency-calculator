@@ -1,153 +1,103 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
+
+import 'package:currency_calculator/bloc/app_cubit.dart';
 import 'package:currency_calculator/data/types.dart';
-import 'package:hive/hive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 typedef Rates = Map<String, Map<String, dynamic>>;
 
-class CurrencyCalculatorRepository {
-  static const String _cacheCurrenciesTimeStampKey = "ctimestamp";
-  static const String _cacheRatesTimeStampKey = "rtimestamp";
+/// interfaces
+abstract class DataProvider<T> {
+  Future<T?> getData({bool cache = false});
+  Future<Duration?> getCacheAge();
+}
 
+abstract class BaseRepository {
+  Future<Rates?> getRates();
+  Future<Iterable<Currency>?> getCurrencies();
+}
 
-  final Box _cache;
+/// implementations
 
-  CurrencyCalculatorRepository(this._cache);
+class NetworkDataProvider<T> extends DataProvider<T> {
+  final String url;
+  final T Function(dynamic json) fromJson;
+  final String _cacheAgeKey;
+  final String _cacheDataKey;
 
-  void close() {
-    _cache.close();
-  }
+  NetworkDataProvider({required this.url, required this.fromJson})
+      : _cacheAgeKey = "age+$url",
+        _cacheDataKey = "data+$url";
 
-  bool _itsNDaysAfter(int days, DateTime date) =>
-      DateTime.now().isAfter(date.add(Duration(days: days)));
-
-  bool _its30DaysAfter(DateTime date) => _itsNDaysAfter(30, date);
-
-  bool _itsNextDayAfter3(DateTime date) {
-    DateTime now = DateTime.now();
-
-    if (now.isBefore(date)) return false;
-    if (now.day == date.day && now.month == date.month && now.year == date.year)
-      return false;
-    if (now.hour >= 3 && now.minute >= 15) return true;
-    return false;
-  }
-
-  // cache management
-  DateTime? _getCacheDate(String key) {
-    int timestamp = _cache.get(key, defaultValue: -1);
-    if (timestamp == -1) return null;
-
-    return DateTime.fromMillisecondsSinceEpoch(timestamp);
-  }
-
-  DateTime? _getCurrenciesCacheDate() =>
-      _getCacheDate(_cacheCurrenciesTimeStampKey);
-
-  DateTime? _getRatesCacheDate() => _getCacheDate(_cacheRatesTimeStampKey);
-
-  Future<void> _setCacheTime(String key, DateTime date) {
-    return _cache.put(key, date.microsecondsSinceEpoch);
-  }
-
-  Future<Iterable<Currency>> getCurrencies() async {
-    DateTime? date = _getCurrenciesCacheDate();
-
-    // no cache yet or new data might be available
-    if (date == null || _its30DaysAfter(date)) {
-      Iterable<Currency> currencies = await _getCurrenciesFromFirebase();
-      return currencies;
-    }
-    // get from cache
-    else {
-      try {
-        Iterable<Currency> currencies = await _getCurrenciesFromCache();
-      return currencies;
-      } on Exception {
-        Iterable<Currency> currencies = await _getCurrenciesFromFirebase();
-      return currencies;
-      }
-      
-    }
-  }
-
-  Future<Iterable<Currency>> _getCurrenciesFromCache() async {
-    
-      QuerySnapshot<Currency> query = await FirebaseFirestore.instance
-          .collection("currencies")
-          .withConverter<Currency>(
-              fromFirestore: (snapshot, options) =>
-                  Currency.fromJson(snapshot.data()!),
-              toFirestore: (_, __) =>
-                  throw Exception("Not allowed to write currency to firestore"))
-          .get(const GetOptions(source: Source.cache));
-
-      if (query.docs.isEmpty) throw Exception("No currencies in cache");
-
-      return query.docs.where((element) => element.data().countryIds.isNotEmpty && element.data().id.isNotEmpty,).map((e) => e.data());
-   
-  }
-
-  Future<Iterable<Currency>> _getCurrenciesFromFirebase() async {
+  @override
+  Future<Duration?> getCacheAge() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
-      QuerySnapshot<Currency> query = await FirebaseFirestore.instance
-          .collection("currencies")
-          .withConverter<Currency>(
-              fromFirestore: (snapshot, options) =>
-                  Currency.fromJson(snapshot.data()!),
-              toFirestore: (_, __) =>
-                  throw Exception("Not allowed to write currency to firestore"))
-          .get(const GetOptions(source: Source.server));
-
-      _setCacheTime(_cacheCurrenciesTimeStampKey, DateTime.now());
-      return query.docs.map((e) => e.data());
+      int milliseconds = prefs.getInt(_cacheAgeKey)!;
+      return DateTime.now()
+          .difference(DateTime.fromMillisecondsSinceEpoch(milliseconds));
     } catch (_) {
-      throw Exception();
+      return null;
     }
   }
 
-  Future<Rates> getRates() async {
-    DateTime? date = _getRatesCacheDate();
+  @override
+  Future<T?> getData({bool cache = false}) {
+    return cache ? _getFromCache() : _getFromUrl();
+  }
 
-    // no cache data or new rates available
-    if (date == null || _itsNextDayAfter3(date)) {
-      Rates rates = await _getRatesFromFirebase();
-      return rates;
-    }
-    // get from cache
-    else {
-      try {
-        return await _getRatesFromCache();
-      } catch (_) {
-        return _getRatesFromFirebase();
-      }
-      
+  Future<T?> _getFromCache() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? jsonDataString = prefs.getString(_cacheDataKey)!;
+      return fromJson(jsonDecode(jsonDataString));
+    } catch (_) {
+      return null;
     }
   }
 
-  Future<Rates> _getRatesFromCache() async {
-    QuerySnapshot<Map<String, dynamic>> query = await FirebaseFirestore.instance
-        .collection("rates")
-        .get(const GetOptions(source: Source.cache));
-    
-    Rates rates = {};
-    for (var rate in query.docs) {
-      rates[rate.id] = rate.data();
+  Future<T?> _getFromUrl() async {
+    try {
+      http.Response resp = await http.get(Uri.parse(url));
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString(_cacheDataKey, resp.body);
+      prefs.setInt(_cacheAgeKey, DateTime.now().millisecondsSinceEpoch);
+
+      return fromJson(json.decode(resp.body));
+    } catch (_) {
+      return null;
     }
-    if (rates.isEmpty) throw Exception("No rates in cache");
-    return rates;
+  }
+}
+
+class AppRepository extends BaseRepository {
+  final DataProvider<Iterable<Currency>> currencyProvider;
+  final DataProvider<Rates> ratesProvider;
+
+  AppRepository({required this.currencyProvider, required this.ratesProvider});
+
+  Future<T?> _getData<T>({required DataProvider<T> provider, required Duration maxAge}) async {
+    Duration? age = await provider.getCacheAge();
+    if (age == null) {
+      return provider.getData();
+    }
+    else if (age > maxAge) {
+      T? data = await provider.getData();
+      if (data != null) return data;
+      return provider.getData(cache: true);
+    } 
+    return provider.getData(cache: true);
   }
 
-  Future<Rates> _getRatesFromFirebase() async {
-    QuerySnapshot<Map<String, dynamic>> query = await FirebaseFirestore.instance
-        .collection("rates")
-        .get(const GetOptions(source: Source.server));
-    
-    _setCacheTime(_cacheRatesTimeStampKey, DateTime.now());
-    
-    Rates rates = {};
-    for (var rate in query.docs) {
-      rates[rate.id] = rate.data();
-    }
-    return rates;
+  @override
+  Future<Rates?> getRates() async {
+    return _getData<Rates>(provider: ratesProvider, maxAge: const Duration(hours: 6));
+  }
+
+  @override
+  Future<Iterable<Currency>?> getCurrencies() {
+    return _getData<Iterable<Currency>>(provider: currencyProvider, maxAge: const Duration(days: 30));
   }
 }
