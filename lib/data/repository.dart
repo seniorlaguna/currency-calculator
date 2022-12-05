@@ -93,7 +93,7 @@ class AppRepository extends BaseRepository {
 
   @override
   Future<Rates?> getRates() async {
-    return _getData<Rates>(provider: ratesProvider, maxAge: const Duration(hours: 6));
+    return _getData<Rates>(provider: ratesProvider, maxAge: const Duration(hours: 1));
   }
 
   @override

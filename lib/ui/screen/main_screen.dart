@@ -14,9 +14,11 @@ import 'package:intl/intl.dart';
 import '../../bloc/review_cubit.dart';
 import '../widget/flag.dart';
 
-const int startupsBeforeReview = 10;
+const int startupsBeforeReview = 4;
 
 class MainScreen extends StatelessWidget {
+  const MainScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<ReviewCubit, int>(
@@ -64,8 +66,7 @@ class MainScreen extends StatelessWidget {
                   const SizedBox(
                     width: 16,
                   ),
-                  Text(
-                      FlutterI18n.translate(context, "msg.${state.message}")),
+                  Text(FlutterI18n.translate(context, "msg.${state.message}")),
                 ],
               )));
             },
@@ -143,78 +144,91 @@ class LoadedPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            GestureDetector(
-              onTap: () => onChangeFromCurrency(context),
-              child: Flag(
-                code: from.flagCode,
-                height: 100,
-                width: 100,
-                borderRadius: 80,
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  GestureDetector(
+                    onTap: () => onChangeFromCurrency(context),
+                    child: Flag(
+                      code: from.flagCode,
+                      height: 100,
+                      width: 100,
+                      borderRadius: 80,
+                    ),
+                  ),
+                  const SizedBox(height: 12,),
+                  TextField(
+                    onChanged: (_) => AppCubit.of(context).onFromValueChanged(),
+                    controller: AppCubit.of(context).fromController,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8)),
+                        hintText: from.id.toUpperCase(),
+                        suffix: Text(from.symbol)),
+                    textAlign: TextAlign.center,
+                    keyboardType: TextInputType.number,
+                  )
+                ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32.0),
-              child: IconButton(
-                iconSize: 40,
-                icon: const Icon(
-                  Icons.swap_horiz,
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  height: 100,
+                  child: Center(
+                    child: IconButton(
+                      iconSize: 40,
+                      icon: const Icon(
+                        Icons.swap_horiz,
+                      ),
+                      onPressed: AppCubit.of(context).switchCurrencies,
+                    ),
+                  ),
                 ),
-                onPressed: AppCubit.of(context).switchCurrencies,
-              ),
-            ),
-            GestureDetector(
-              onTap: () => onChangeToCurrency(context),
-              child: Flag(
-                code: to.flagCode,
-                height: 100,
-                width: 100,
-                borderRadius: 80,
-              ),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 12,
-        ),
-        Row(
-          children: [
-            Expanded(
-                child: TextField(
-              onChanged: (_) => AppCubit.of(context).onFromValueChanged(),
-              controller: AppCubit.of(context).fromController,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8)),
-                  hintText: from.id.toUpperCase(),
-                  suffix: Text(from.symbol)),
-              textAlign: TextAlign.center,
-              keyboardType: TextInputType.number,
-            )),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                "≈",
-                style: TextStyle(fontSize: 20),
-              ),
+                 const SizedBox(height: 28,),
+                Text(
+                  "≈",
+                  style: TextStyle(fontSize: 20),
+                )
+              ],
             ),
             Expanded(
-                child: TextField(
-              onChanged: (_) => AppCubit.of(context).onToValueChanged(),
-              controller: AppCubit.of(context).toController,
-              decoration: InputDecoration(
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-                hintText: to.id.toUpperCase(),
-                suffix: Text(to.symbol),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  GestureDetector(
+                    onTap: () => onChangeToCurrency(context),
+                    child: Flag(
+                      code: to.flagCode,
+                      height: 100,
+                      width: 100,
+                      borderRadius: 80,
+                    ),
+                  ),
+                   const SizedBox(height: 12,),
+                  TextField(
+                    onChanged: (_) => AppCubit.of(context).onToValueChanged(),
+                    controller: AppCubit.of(context).toController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8)),
+                      hintText: to.id.toUpperCase(),
+                      suffix: Text(to.symbol),
+                    ),
+                    textAlign: TextAlign.center,
+                    keyboardType: TextInputType.number,
+                  )
+                ],
               ),
-              textAlign: TextAlign.center,
-              keyboardType: TextInputType.number,
-            ))
+            )
           ],
         ),
-        Spacer(),
+        const SizedBox(height: 12,),
         Text(
           FlutterI18n.translate(context, "overview"),
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),

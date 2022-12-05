@@ -9,11 +9,20 @@ Future<void> openUrl(String url) async {
 }
 
 void openLikeUrl() {
-  openUrl("https://play.google.com/store/apps/details?id=de.seniorlaguna.currency_calculator");
+  try {
+    openUrl("market://details?id=de.seniorlaguna.currency_calculator");
+  } catch (_) {
+    openUrl("https://play.google.com/store/apps/details?id=de.seniorlaguna.currency_calculator");
+  }
+  
 }
 
 void openProVersionUrl() {
-  openUrl("https://play.google.com/store/apps/details?id=de.seniorlaguna.currency_calculator_pro");
+  try {
+      openUrl("market://details?id=de.seniorlaguna.currency_calculator_pro");
+  } catch (_) {
+      openUrl("https://play.google.com/store/apps/details?id=de.seniorlaguna.currency_calculator_pro");
+  }
 }
 
 void openTermsOfUse(BuildContext context) {
